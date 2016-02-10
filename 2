@@ -1,0 +1,59 @@
+DOMAINS
+file=f
+PREDICATES
+readfile
+writeFile(string)
+write_file(file)
+
+CLAUSES
+
+
+readfile:-
+        
+        writedevice(screen), 
+        write("  Enter symbol(# — end)"), nl, 
+       
+        readchar(C), 
+        write(C), 
+        C<>'#',!, 
+        writedevice(f), 
+        write(C), 
+        readfile.
+        
+readfile:-
+        closefile(f). 
+        
+
+write_file(f):-
+          not(eof(f)),!, 
+          readchar(C),
+          write(C," "), 
+          write_file(f). 
+write_file(_).
+
+writeFile(F_N):-
+          existfile(F_N),!, 
+          openread(f,F_N), 
+          readdevice(f),
+          write_file(f), 
+                            
+          closefile(f), 
+          readdevice(keyboard), 
+          nl,nl, 
+          write("Íàæìèòå ëþáóþ êëàâèøó"),nl, 
+          readchar(_).
+            
+        
+GOAL
+write("Enter a name of file : "),
+readln(F_N), 
+openwrite(f,F_N),
+write("File - ",F_N),nl,  
+readfile(),
+%openread(f, F_N),
+writeFile(F_N),
+openmodify(f,F_N),filepos(f,1,2),
+%eof(f),
+write("Fail otkrit na dozapis",F_N),nl,
+readfile(),
+writeFile(F_N).
