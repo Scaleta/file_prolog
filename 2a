@@ -1,0 +1,67 @@
+DOMAINS
+file=f
+PREDICATES
+readfile
+%charcount(string,integer)
+lenght(file,integer)
+writeFile(string)
+write_file(file)
+CLAUSES
+readfile:-
+        writedevice(screen), 
+        write("Enter symbol(# — end)"), nl, 
+        readchar(C), 
+        write(C), 
+        C<>'#',!, 
+        writedevice(f), 
+        write(C), 
+        readfile.
+        
+readfile:-
+        closefile(f). 
+        
+%openapp
+write_file(f):-
+          not(eof(f)),!, /* åñëè ôàéë f åùå íå çàêîí÷èëñÿ */
+          readchar(C), /* ÷èòàåì èç íåãî ñèìâîë */
+          write(C," "), /* âûâîäèì ñèìâîë íà ýêðàí*/
+          write_file(f). /* ïðîäîëæàåì ïðîöåññ */
+write_file(_).
+
+writeFile(F_N):-
+          existfile(F_N),!, /*óáåæäàåìñÿ â ñóùåñòâîâàíèè ôàéëà ñ èìåíåì F_N*/
+          openread(f,F_N), /*  ñâÿçûâàåì âíåøíèé ôàéë F_N ñ âíóòðåííèì ôàéëîì f è îòêðûâàåì åãî íà ÷òåíèå */
+          readdevice(f),/*óñòàíàâëèâàåì â êà÷åñòâå óñòðîéñòâà ÷òåíèÿ ôàéë f*/
+          write_file(f), /* âûçûâàåì ïðåäèêàò, âûâîäÿùèé íà ýêðàí âñå ñèìâîëû 
+                            ôàéëà f */
+          closefile(f), /* çàêðûâàåì ôàéë */
+          readdevice(keyboard), /* ïåðåíàïðàâëÿåì ââîä íà êëàâèàòóðó */
+          nl,nl, /* ïðîïóñêàåì ñòðîêó */
+          write("Íàæìèòå ëþáóþ êëàâèøó"), /* âûâîäèì ñîîáùåíèå íà ýêðàí */
+          readchar(_).
+        
+%charcount(F_N,K):-         lenght(writeFile(F_N)).  
+          
+
+lenght(f,S):-lenght(f,S1),S=S1+1,S>=1,!.                
+        
+GOAL
+write("Enter a name of file : "),
+readln(F_N), 
+openwrite(f,F_N),
+write("File - ",F_N),nl,  
+readfile(),
+%openread(f, F_N),
+writeFile(F_N),
+openmodify(f,F_N),filepos(f,S,2),
+%eof(f),
+write("Fail otkrit na dozapis",F_N),nl,
+readfile(),
+writeFile(F_N).
+%closefile(f),
+
+%write("File opened to read "),nl,
+%openread(f, F_N). 
+
+
+
