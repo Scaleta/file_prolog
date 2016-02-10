@@ -1,0 +1,25 @@
+DOMAINS
+file=f
+PREDICATES
+readfile
+CLAUSES
+readfile:-
+        writedevice(screen), 
+        write("Enter symbol(# — end)"), nl, 
+        readchar(C), 
+        write(C), 
+        C<>'#',!, 
+        writedevice(f), 
+        write(C), 
+        readfile.
+readfile:-
+        closefile(f). 
+GOAL
+write("Enter a name of file : "),
+readln(F_N), 
+openwrite(f,F_N),
+write("Fail - ",F_N),nl,  
+readfile(). 
+
+
+
