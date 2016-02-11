@@ -1,0 +1,23 @@
+predicates
+nondeterm    charcount(string,char,integer)
+nondeterm        result
+clauses
+        charcount("",_,0). 
+        charcount(S,C,N):-frontchar(S,C,S1),!,
+                          charcount(S1,C,N1),N=N1+1. 
+        charcount(S,C,N):-frontchar(S,_,S1),
+                          charcount(S1,C,N). 
+        result:-write("vvedite_stroku_slov"),nl,
+            readln(S),write("vvedite_simvol"),nl,
+            readchar(C),write("kolicestvo_raz-"),charcount(S,C,N),
+                write(N).
+goal  
+        result. 
+
+
+
+
+
+
+
+
